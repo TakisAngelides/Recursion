@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
+solutions = [] # will store all the possible solutions for the maze problem
 
 def get_maze():
 
@@ -19,6 +22,7 @@ def get_maze():
     maze[3][0] = 1
     maze[3][5] = 1
     maze[4][5] = 1
+    maze[5][2] = 1 # uncomment this to see that the solve function finds all possible solutions
 
     return maze
 
@@ -49,6 +53,15 @@ def get_legal_moves(m, loc, p):
 
 def solve(m, s, p):
 
+    """
+    :param m: this is a list of lists representing the maze as a matrix
+    :param s: this is a list with two elements [row, column] representing where we start from on the maze
+    :param p: this is a list of two element lists [[row, column], [row, column], ... ] representing the path from entry
+    to exit of the maze, we initialize this to just p = [s] when we first call the function
+
+    :return: this function returns nothing but prints all possible solutions to the maze
+    """
+
     if s[0] != len(m)-1: # recursion stopping condition - if this is false we have reached the bottom of the maze and are finished so we print p
 
         for legal_move in get_legal_moves(m, s, p): # if the above condition is true it means we have not reached the bottom of the maze and we keep exploring legal moves
@@ -61,10 +74,13 @@ def solve(m, s, p):
         return
 
     print(p)
+    # Write the solution to a text file
+    with open('solutions.txt', 'a') as f:
+        for square in p:
+            f.write(f'{square[0]},{square[1]},')
+        f.write('\n')
+    return
 
 maze = get_maze()
 
 solve(maze, [0, 5], [[0, 5]])
-
-
-
